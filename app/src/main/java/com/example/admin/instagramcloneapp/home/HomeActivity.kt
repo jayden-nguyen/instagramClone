@@ -6,6 +6,8 @@ import android.util.Log
 import com.example.admin.instagramcloneapp.R
 import com.example.admin.instagramcloneapp.utils.BottomNavigationViewHelper
 import com.example.admin.instagramcloneapp.utils.SectionPagerAdapter
+import com.example.admin.instagramcloneapp.utils.UniversalImageLoader
+import com.nostra13.universalimageloader.core.ImageLoader
 import kotlinx.android.synthetic.main.layout_bottom_navigation_view.*
 import kotlinx.android.synthetic.main.layout_center_viewpager.*
 import kotlinx.android.synthetic.main.layout_top_tabs.*
@@ -22,6 +24,7 @@ class HomeActivity : AppCompatActivity() {
 
         setupBottomNavigationView()
         setupViewPager()
+        initImageLoader()
     }
 
     /**
@@ -47,5 +50,13 @@ class HomeActivity : AppCompatActivity() {
         container.adapter = adapter
 
         tabs.setupWithViewPager(container)
+    }
+
+    /**
+     * Init Image Loader
+     */
+    private fun initImageLoader() {
+        val universalImageLoader = UniversalImageLoader(applicationContext)
+        ImageLoader.getInstance().init(universalImageLoader.getConfig())
     }
 }

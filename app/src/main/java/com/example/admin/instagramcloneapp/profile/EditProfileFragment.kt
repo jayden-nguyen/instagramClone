@@ -19,7 +19,6 @@ class EditProfileFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initImageLoader()
         setProfileImage()
 
         backArrow.setOnClickListener {
@@ -27,13 +26,8 @@ class EditProfileFragment: Fragment() {
         }
     }
 
-    private fun initImageLoader() {
-        val universalImageLoader = UniversalImageLoader(context!!)
-        ImageLoader.getInstance().init(universalImageLoader.getConfig())
-    }
-
     private fun setProfileImage() {
-        val imgUrl = "https://www.iconspng.com/images/male-avatar/male-avatar.jpg"
+        val imgUrl = "https://cdn.vox-cdn.com/thumbor/md1EHFWr0sbMy9Tc0Stf34yKJRQ=/0x0:2040x1360/920x613/filters:focal(857x517:1183x843):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/60742349/wjoel_180413_1777_android_001.0.jpg"
         UniversalImageLoader.setImage(imgUrl,profilePhoto, null)
     }
 }
