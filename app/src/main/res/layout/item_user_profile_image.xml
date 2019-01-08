@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/imgItemUserProfile"
+    android:scaleType="centerCrop"
+    android:layout_margin="1dp"
     >
 
 </com.example.admin.instagramcloneapp.customview.SquareImageView>
