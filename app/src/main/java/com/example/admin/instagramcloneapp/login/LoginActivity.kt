@@ -25,6 +25,7 @@ class LoginActivity: AppCompatActivity() {
 
         setupFirebaseAuth()
         init()
+        mAuth.signOut()
     }
 
     private fun init() {
@@ -37,6 +38,26 @@ class LoginActivity: AppCompatActivity() {
                 textWait.visibility = View.VISIBLE
                 mAuth.signInWithEmailAndPassword(edtEmail.text.toString(), edtPassword.text.toString()).addOnCompleteListener(this, object : OnCompleteListener<AuthResult>{
                     override fun onComplete(task: Task<AuthResult>) {
+                        Log.d(TAG, "signInWithEmail: OnComplete  ${task.isSuccessful}")
+                        val user = mAuth.currentUser
+
+                        try {
+                            if (user != null) {
+                                if (user.isEmailVerified) {
+                                    Log.d(TAG, "onComplete: success email is Verified")
+                                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                                } else {
+                                    Toast.makeText(this@LoginActivity, "Email is not verified \n check your email inbox", Toast.LENGTH_SHORT).show()
+                                    progressBarLogin.visibility = View.GONE
+                                    textWait.visibility = View.GONE
+                                    mAuth.signOut()
+                                }
+
+                            }
+                        }catch (e: NullPointerException) {
+                            Log.e(TAG, "onComplete: NullPointerException ${e.message}")
+                        }
+
                         if (!task.isSuccessful) {
                             Toast.makeText(this@LoginActivity, "Login Failed: ${task.exception}",Toast.LENGTH_SHORT).show()
                             progressBarLogin.visibility = View.GONE
@@ -46,15 +67,15 @@ class LoginActivity: AppCompatActivity() {
                             Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
                             progressBarLogin.visibility = View.GONE
                             textWait.visibility = View.GONE
+                            if (mAuth.currentUser != null) {
+                                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                            }
                         }
                     }
                 })
             }
         }
 
-        if (mAuth.currentUser != null) {
-            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-        }
 
         linkSignup.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
