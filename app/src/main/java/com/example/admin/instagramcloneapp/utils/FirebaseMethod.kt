@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.example.admin.instagramcloneapp.R
 import com.example.admin.instagramcloneapp.model.User
 import com.example.admin.instagramcloneapp.model.UserAccountSetting
+import com.example.admin.instagramcloneapp.model.UserSetting
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -13,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.lang.NullPointerException
 
 class FirebaseMethod {
     private val TAG = FirebaseMethod::class.simpleName
@@ -94,5 +96,46 @@ class FirebaseMethod {
         mDatabaseReference.child(mContext?.getString(R.string.dbname_user).toString()).child(userId).setValue(user)
         val userAccountSetting = UserAccountSetting(description, userName, 0,0,0,"",userName, website)
         mDatabaseReference.child(mContext?.getString(R.string.dbname_user_account_setting).toString()).child(userId).setValue(userAccountSetting)
+    }
+
+    /**
+     * Retrieve data from Firebase
+     * @param dataSnapshot
+     * @return userAccountSetting
+     */
+    fun getUserSetting(dataSnapshot: DataSnapshot): UserSetting {
+        val setting = UserAccountSetting()
+        val user = User()
+        for (ds in dataSnapshot.children) {
+            if (ds.key!!.equals(mContext?.getString(R.string.dbname_user_account_setting))){
+                Log.d(TAG, "Get user account setting dataSnapShot $ds")
+
+                try {
+                    setting.display_name = ds.child(userId).getValue(UserAccountSetting::class.java)?.display_name
+                    setting.user_name = ds.child(userId).getValue(UserAccountSetting::class.java)?.user_name
+                    setting.website = ds.child(userId).getValue(UserAccountSetting::class.java)?.website
+                    setting.desscription = ds.child(userId).getValue(UserAccountSetting::class.java)?.desscription
+                    setting.followers = ds.child(userId).getValue(UserAccountSetting::class.java)?.followers
+                    setting.followings = ds.child(userId).getValue(UserAccountSetting::class.java)?.followings
+                    setting.posts = ds.child(userId).getValue(UserAccountSetting::class.java)?.posts
+                    setting.profile_photo = ds.child(userId).getValue(UserAccountSetting::class.java)?.profile_photo
+                }catch (e: NullPointerException) {
+                    Log.e(TAG, "NullPointerException ${e.message}")
+                }
+            }
+
+            if (ds.key!!.equals(mContext?.getString(R.string.dbname_user))) {
+                try {
+                    user.user_name = ds.child(userId).getValue(User::class.java)?.user_name
+                    user.user_id = ds.child(userId).getValue(User::class.java)?.user_id
+                    user.phone_number = ds.child(userId).getValue(User::class.java)?.phone_number
+                    user.email = ds.child(userId).getValue(User::class.java)?.email
+                }catch (e: NullPointerException) {
+                    Log.e(TAG, "NullPointerException ${e.message}")
+                }
+            }
+        }
+
+        return UserSetting(user, setting)
     }
 }

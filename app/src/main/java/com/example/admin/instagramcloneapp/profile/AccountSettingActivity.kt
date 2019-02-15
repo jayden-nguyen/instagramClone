@@ -28,9 +28,15 @@ class AccountSettingActivity: AppCompatActivity(), SettingAdapter.OnItemClick {
         setContentView(R.layout.activity_account_setting)
         setupSettingList()
         setupFragment()
-
+        getIncomingIntent()
         backArrow.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun getIncomingIntent() {
+        if (intent.hasExtra(getString(R.string.calling_activity))) {
+            setupViewPager(mPagerAdapter.getFragmentNumber(getString(R.string.edit_profile)))
         }
     }
 
@@ -48,10 +54,10 @@ class AccountSettingActivity: AppCompatActivity(), SettingAdapter.OnItemClick {
         }
     }
 
-    private fun setupViewPager(fragmentNumber: Int) {
+    private fun setupViewPager(fragmentNumber: Int?) {
         relLayout1.visibility = View.GONE
         container.adapter = mPagerAdapter
-        container.currentItem = fragmentNumber
+        container.currentItem = fragmentNumber!!
     }
 
     private fun setupFragment() {

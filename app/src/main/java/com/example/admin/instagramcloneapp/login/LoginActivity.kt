@@ -25,7 +25,6 @@ class LoginActivity: AppCompatActivity() {
 
         setupFirebaseAuth()
         init()
-        mAuth.signOut()
     }
 
     private fun init() {

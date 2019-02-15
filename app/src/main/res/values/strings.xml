@@ -2,6 +2,7 @@
     <string name="app_name">InstagramCloneApp</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="sign_out">Sign Out</string>
+    <string name="profile_fragment">Profile Fragment</string>
 
     <!--- Firebase Message -->
     <string name="auth_failed">Failed to Authenticate</string>
@@ -9,4 +10,6 @@
 
     <string name="dbname_user">user</string>
     <string name="dbname_user_account_setting">user_account_setting</string>
+    <string name="calling_activity">calling_activity</string>
+    <string name="profile_activity">profile_activity</string>
 </resources>
